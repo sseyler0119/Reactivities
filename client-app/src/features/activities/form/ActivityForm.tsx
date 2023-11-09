@@ -1,34 +1,42 @@
-import { Segment, Form, Button } from "semantic-ui-react"
-import { Activity } from "../../../app/models/activity";
-import { ChangeEvent, useState } from "react";
+import { Segment, Form, Button } from 'semantic-ui-react';
+import { Activity } from '../../../app/models/activity';
+import { ChangeEvent, useState } from 'react';
 
 interface Props {
   activity: Activity | undefined;
   closeForm: () => void;
   createOrEdit: (activity: Activity) => void;
+  submitting: boolean;
 }
 
-const ActivityForm = ({activity: selectedActivity, closeForm, createOrEdit} : Props) => {
-    const initialState = selectedActivity ?? {
-        id:'',
-        title:'',
-        category: '',
-        description: '',
-        date: '',
-        city: '',
-        venue: ''
-    }
+const ActivityForm = ({
+  activity: selectedActivity,
+  closeForm,
+  createOrEdit,
+  submitting,
+}: Props) => {
+  const initialState = selectedActivity ?? {
+    id: '',
+    title: '',
+    category: '',
+    description: '',
+    date: '',
+    city: '',
+    venue: '',
+  };
 
-    const [activity, setActivity] = useState(initialState);
-    
-    const handleSubmit = () => {
-        createOrEdit(activity);
-    }
+  const [activity, setActivity] = useState(initialState);
 
-    const handleInputChange = (event : ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
-      const {name, value} = event.target;      
-      setActivity({...activity, [name]: value})
-    };
+  const handleSubmit = () => {
+    createOrEdit(activity);
+  };
+
+  const handleInputChange = (
+    event: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+  ) => {
+    const { name, value } = event.target;
+    setActivity({ ...activity, [name]: value });
+  };
   return (
     <Segment clearing>
       <Form onSubmit={handleSubmit} autoComplete='off'>
@@ -53,6 +61,7 @@ const ActivityForm = ({activity: selectedActivity, closeForm, createOrEdit} : Pr
         <Form.Input
           placeholder='Date'
           value={activity.date}
+          type='date'
           name='date'
           onChange={handleInputChange}
         />
@@ -68,7 +77,13 @@ const ActivityForm = ({activity: selectedActivity, closeForm, createOrEdit} : Pr
           name='venue'
           onChange={handleInputChange}
         />
-        <Button floated='right' positive type='submit' content='Submit' />
+        <Button
+          loading={submitting}
+          floated='right'
+          positive
+          type='submit'
+          content='Submit'
+        />
         <Button
           floated='right'
           type='button'
@@ -78,5 +93,5 @@ const ActivityForm = ({activity: selectedActivity, closeForm, createOrEdit} : Pr
       </Form>
     </Segment>
   );
-}
-export default ActivityForm
+};
+export default ActivityForm;
