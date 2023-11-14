@@ -40,7 +40,7 @@ function App() {
         setSelectedActivity(activity);
         setEditMode(false);
         setSubmitting(false);
-      });
+      });      
     }
   };
 

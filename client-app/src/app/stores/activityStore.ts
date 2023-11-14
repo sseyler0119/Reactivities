@@ -33,7 +33,7 @@ export default class ActivityStore {
     }
 
     selectActivity = (id: string) => {
-        this.selectedActivity = this.activities.find(x => x.id === id);
+        this.selectedActivity = this.activities.find(a => a.id === id);
     }
 
     cancelSelectedActivity = () => {
@@ -41,6 +41,8 @@ export default class ActivityStore {
     }
 
     openForm = (id?: string) => {
+        console.log(id);
+        
         id ? this.selectActivity(id) : this.cancelSelectedActivity();
         this.editMode = true;
     }

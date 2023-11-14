@@ -9,14 +9,15 @@ interface Props {
   submitting: boolean;
 }
 const ActivityList = ({ activities, deleteActivity, submitting }: Props) => {
-  const {activityStore} = useStore();
   const [target, setTarget] = useState('');
-
+  
   const handleActivityDelete = (e: SyntheticEvent<HTMLButtonElement>, id: string) => {
     setTarget(e.currentTarget.name);
     deleteActivity(id);
   }
-
+  
+  const {activityStore} = useStore();
+  
   return (
     <Segment>
       <Item.Group divided>
