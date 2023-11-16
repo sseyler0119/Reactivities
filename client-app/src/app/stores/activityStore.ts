@@ -2,6 +2,7 @@ import { makeAutoObservable, runInAction } from "mobx";
 import { Activity } from "../models/activity";
 import agent from "../api/agent";
 import { v4 as uuid } from 'uuid';
+import { format } from 'date-fns';
 
 export default class ActivityStore {
     //activities: Activity[] = [];
@@ -17,13 +18,13 @@ export default class ActivityStore {
 
     get activitiesByDate() {
         return Array.from(this.activityRegistry.values()).sort((a, b) => 
-            Date.parse(a.date) - Date.parse(b.date));
+            a.date!.getTime() - b.date!.getTime()); // we know date cannot be null at this point, so we use ! to override typescript warnings
     }
 
     get groupedActivities() {
         return Object.entries(
           this.activitiesByDate.reduce((activities, activity) => {
-            const date = activity.date;
+            const date = format(activity.date!, 'dd MMM yyyy');
             /* if elements match then spread activities, add activity we're executing the callback function no
                 otherwise, just create a new array with that activity  */
             activities[date] = activities[date]
@@ -74,7 +75,8 @@ export default class ActivityStore {
     }
     
     private setActivity = (activity: Activity) => {
-        activity.date = activity.date.split('T')[0]; // just store first part of date w/out time
+        //activity.date = activity.date.split('T')[0]; // just store first part of date w/out time, when date is a string object
+        activity.date = new Date(activity.date!); // after changing date to a Date object in activity.ts
               this.activityRegistry.set(activity.id, activity); // set with key, type
     }
 
