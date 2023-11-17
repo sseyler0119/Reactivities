@@ -1,12 +1,28 @@
 using Domain;
+using Microsoft.AspNetCore.Identity;
 
 namespace Persistence
 {
     public class Seed
     {
         /*static methods allow us to use the method without creating a new instance of the class */
-        public static async Task SeedData(DataContext context)
+        public static async Task SeedData(DataContext context, UserManager<AppUser> userManager)
         {
+            if(!userManager.Users.Any())
+            {
+                var users = new List<AppUser>
+                {
+                    new AppUser{DisplayName =  "Bob", UserName="bob", Email="bob@test.com"},
+                    new AppUser{DisplayName =  "Tom", UserName="tom", Email="tom@test.com"},
+                    new AppUser{DisplayName =  "Sally", UserName="sally", Email="sally@test.com"},
+                };
+
+                foreach (var user in users)
+                {
+                    await userManager.CreateAsync(user, "Pa$$w0rd"); // overload with password to set new user with pw, will create/save new user at same time
+                }
+            }
+
             if (context.Activities.Any()) return; // check to see if Activities data already exists
             
             var activities = new List<Activity>
