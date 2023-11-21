@@ -3,6 +3,7 @@ import { Activity } from '../models/activity';
 import { toast } from 'react-toastify';
 import { router } from '../router/Routes';
 import { store } from '../stores/store';
+import { User, UserFormValues } from '../models/user';
 
 const sleep = (delay: number) => {
   return new Promise((resolve) => {
@@ -11,6 +12,16 @@ const sleep = (delay: number) => {
 };
 
 axios.defaults.baseURL = 'http://localhost:5000/api'; // set base url
+
+// store the response.data in responseBody, pass in response of type AxiosResponse
+/* add <T> for a generic type for the response body*/
+const responseBody = <T>(response: AxiosResponse<T>) => response.data;
+
+axios.interceptors.request.use(config => {
+  const token = store.commonStore.token;
+  if(token && config.headers) config.headers.Authorization = `Bearer ${token}`; // add token to headers
+  return config;
+})
 
 /* every time we receive a response, we use an interceptor to apply a 1s delay*/
 axios.interceptors.response.use(async (response) => {
@@ -52,9 +63,7 @@ axios.interceptors.response.use(async (response) => {
     return Promise.reject(error);
 });
 
-// store the response.data in responseBody, pass in response of type AxiosResponse
-/* add <T> for a generic type for the response body*/
-const responseBody = <T>(response: AxiosResponse<T>) => response.data;
+
 
 /* create an object that will store our common requests that  we will make to axios */
 /* add <T> to each request to specify the return type for each request */
@@ -76,9 +85,16 @@ const Activities = {
   delete: (id: string) => requests.del<void>(`/activities/${id}`),
 };
 
+const Account = {
+  current: () => requests.get<User>('/account'),
+  login: (user: UserFormValues) => requests.post<User>('/account/login', user),
+  register: (user: UserFormValues) => requests.post<User>('/account/register', user),
+}
+
 /* create an object that can be used to get our Activities and our list request  */
 const agent = {
   Activities,
+  Account
 };
 
 export default agent;
