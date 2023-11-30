@@ -2,6 +2,7 @@ import { Tab } from "semantic-ui-react"
 import ProfilePhotos from "./ProfilePhotos"
 import { Profile } from "../../app/models/profile"
 import { observer } from "mobx-react-lite";
+import ProfileAbout from "./ProfileAbout";
 
 interface Props {
     profile: Profile;
@@ -9,7 +10,7 @@ interface Props {
 
 const ProfileContent = ({profile} : Props) => {
     const panes = [
-        {menuItem: 'About', render: () => <Tab.Pane>About Conteht</Tab.Pane>},
+        {menuItem: 'About', render: () => <ProfileAbout />},
         {menuItem: 'Photos', render: () => <ProfilePhotos profile={profile}/>},
         {menuItem: 'Events', render: () => <Tab.Pane>Events Conteht</Tab.Pane>},
         {menuItem: 'Followers', render: () => <Tab.Pane>Followers Conteht</Tab.Pane>},

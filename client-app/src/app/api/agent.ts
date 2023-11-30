@@ -104,6 +104,7 @@ const Profiles = {
   }, 
   setMainPhoto: (id: string) => requests.post(`/photos/${id}/setMain`, {}),
   deletePhoto: (id: string) => requests.del(`/photos/${id}`),
+  updateProfile: (profile: Partial<Profile>) => requests.put('/profiles', profile),
 }
 
 /* create an object that can be used to get our Activities and our list request  */

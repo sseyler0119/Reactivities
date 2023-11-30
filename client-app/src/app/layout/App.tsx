@@ -7,7 +7,7 @@ import { ToastContainer } from 'react-toastify';
 import { useStore } from '../stores/store';
 import { useEffect } from 'react';
 import LoadingComponent from './LoadingComponent';
-import ModalContainer from '../api/common/modals/ModalContainer';
+import ModalContainer from '../common/modals/modals/ModalContainer';
 
 function App() {
   const location = useLocation();
