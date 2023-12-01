@@ -1,5 +1,6 @@
 using API.Extensions;
 using API.Middleware;
+using API.SignalR;
 using Domain;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
@@ -38,6 +39,7 @@ app.UseAuthentication(); // useAuthentication() must come before UseAuthorizatio
 app.UseAuthorization();
 
 app.MapControllers();
+app.MapHub<ChatHub>("/chat"); 
 
 /* using will automatically clean up the memory allocated for the variable when we're done using it*/
 using var scope = app.Services.CreateScope();
