@@ -13,7 +13,7 @@ const sleep = (delay: number) => {
   });
 };
 
-axios.defaults.baseURL = 'http://localhost:5000/api'; // set base url
+axios.defaults.baseURL = import.meta.env.VITE_API_URL; // set base url
 
 // store the response.data in responseBody, pass in response of type AxiosResponse
 /* add <T> for a generic type for the response body*/
@@ -27,7 +27,7 @@ axios.interceptors.request.use(config => {
 
 /* every time we receive a response, we use an interceptor to apply a 1s delay*/
 axios.interceptors.response.use(async (response) => {
-    await sleep(1000);
+    if(import.meta.env.DEV) await sleep(1000); // only in development
     const pagination = response.headers['pagination'];
     if(pagination) {
       response.data = new PaginatedResult(response.data, JSON.parse(pagination));

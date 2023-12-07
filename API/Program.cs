@@ -38,8 +38,12 @@ app.UseCors("CorsPolicy");
 app.UseAuthentication(); // useAuthentication() must come before UseAuthorization()
 app.UseAuthorization();
 
+app.UseDefaultFiles(); // look in wwwroot files for index.html file
+app.UseStaticFiles(); // look in wwwrooot file for static content
+
 app.MapControllers();
 app.MapHub<ChatHub>("/chat"); 
+app.MapFallbackToController("Index", "Fallback"); // use Index method in Fallback controller to serve up Index.html page
 
 /* using will automatically clean up the memory allocated for the variable when we're done using it*/
 using var scope = app.Services.CreateScope();
