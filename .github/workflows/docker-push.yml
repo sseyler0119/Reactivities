@@ -26,7 +26,7 @@ jobs:
           push: true
           tags: serenadev/reactivities:latest
   deploy:
-    name: docker
+    needs:  docker
     name: Deploy app
     runs-on: ubuntu-latest
     steps:
