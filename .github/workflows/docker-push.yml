@@ -2,9 +2,9 @@ name: ci
 
 on:
     workflow_dispatch:
-#   push:
-#     branches:
-#       - 'main'
+   push:
+     branches:
+       - 'main'
 
 jobs:
   docker:
@@ -26,6 +26,7 @@ jobs:
           push: true
           tags: serenadev/reactivities:latest
   deploy:
+    name: docker
     name: Deploy app
     runs-on: ubuntu-latest
     steps:
